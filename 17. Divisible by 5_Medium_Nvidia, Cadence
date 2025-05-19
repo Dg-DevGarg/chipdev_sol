@@ -1,0 +1,27 @@
+module model (
+  input clk,
+  input resetn,
+  input din,
+  output logic dout
+);
+parameter A=0,B=1,C=2,D=3,E=4,F=5;
+reg [2:0] state,next_state;
+initial state = A;
+always@(*)
+begin
+  case(state)
+  A:next_state = din?B:C;
+  B:next_state = din?D:E;
+  C:next_state = din?B:C;
+  D:next_state = din?E:B;
+  E:next_state = din?C:F;
+  F:next_state = din?F:D;
+  default:next_state=A;
+  endcase
+end
+always@(posedge clk) begin
+  if(!resetn) state<=A;
+  else state<=next_state;
+end
+assign dout = (state==C);
+endmodule
