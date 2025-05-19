@@ -1,0 +1,23 @@
+module model #(parameter
+  DATA_WIDTH = 32
+) (
+  input clk,
+  input resetn,
+  input [DATA_WIDTH-1:0] din,
+  output logic [DATA_WIDTH-1:0] dout
+);
+reg [DATA_WIDTH-1:0] largest,largest_2nd;
+always@(posedge clk)
+begin
+  if(!resetn) begin
+    largest_2nd<=0;
+  largest <= 0;
+  end
+  else 
+  begin
+  largest_2nd<= (din>=largest)?largest:((din>=largest_2nd&&din<largest)?din:largest_2nd);
+  largest<=   (din>=largest)?din:largest;
+  end
+end
+assign dout = largest_2nd;
+endmodule
