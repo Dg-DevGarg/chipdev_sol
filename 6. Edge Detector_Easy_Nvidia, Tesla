@@ -1,0 +1,19 @@
+module model (
+  input clk,
+  input resetn,
+  input din,
+  output dout
+);
+reg din_prev;
+reg dout_reg;
+always@(posedge clk) begin
+  if(!resetn) begin din_prev<=1'b0;
+  dout_reg<=1'b0;
+  end
+  else begin
+    din_prev<=din;
+     dout_reg <= (din==1 && din_prev==1'b0);
+  end
+end
+assign dout = dout_reg;
+endmodule
