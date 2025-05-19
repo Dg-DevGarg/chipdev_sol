@@ -1,0 +1,18 @@
+module model #(parameter
+  DIV_LOG2=3,
+  OUT_WIDTH=32,
+  IN_WIDTH=OUT_WIDTH+DIV_LOG2
+) (
+  input [IN_WIDTH-1:0] din,
+  output logic [OUT_WIDTH-1:0] dout
+);
+reg up_add;
+reg [OUT_WIDTH-1:0] temp;
+reg check2;
+
+always@(*) begin
+  temp = din[IN_WIDTH-1:DIV_LOG2];
+  check2 = &temp;
+  dout = temp+(check2?1'b0:din[DIV_LOG2-1]);
+end
+endmodule
