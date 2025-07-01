@@ -1,0 +1,29 @@
+module model (
+    input clk,
+    input resetn,
+    input [7:0] din,
+    input [7:0] tap,
+    output [7:0] dout
+);
+
+reg [7:0] load_tap;
+reg [7:0] xor_check;
+reg [7:0] result;
+always@(*) begin
+    for(integer i=0;i<8;i=i+1) begin
+        xor_check[i]=(load_tap[i])?result[i]:0;
+    end
+end
+assign xored = ^xor_check;
+always@(posedge clk) begin
+load_tap<=tap;
+    if(!resetn)  begin
+        result<=din;
+
+    end
+else result<={result[6:0],xored};
+
+
+end
+assign dout = result;
+endmodule
