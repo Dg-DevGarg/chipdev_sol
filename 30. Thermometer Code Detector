@@ -1,0 +1,16 @@
+module model #(parameter
+    DATA_WIDTH = 8
+) (
+    input [DATA_WIDTH-1:0] codeIn,
+    output reg isThermometer
+);
+reg [1:0] counter;
+always@(*)
+begin
+    counter =0;
+    for(integer i=0;i<DATA_WIDTH-1;i=i+1) begin
+        counter = (counter<2)?(counter+(codeIn[i]^codeIn[i+1])):counter;
+    end
+end
+always@(*) isThermometer = (counter==1);
+endmodule
