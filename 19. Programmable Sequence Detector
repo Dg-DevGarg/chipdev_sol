@@ -1,0 +1,25 @@
+module model (
+  input clk,
+  input resetn,
+  input [4:0] init,
+  input din,
+  output logic seen
+);
+reg [4:0] check;
+reg[2:0] counter;
+reg [4:0] cheker;
+reg reset_prev;
+always@(posedge clk) begin
+  reset_prev<=resetn;
+  if(!resetn) begin
+    check<=0;
+    counter<=0;
+  end
+  else begin
+    counter <= (counter<5)?(counter+1):counter;
+    check<=(check<<1)+din;
+  end
+end
+assign cheker = (resetn && !reset_prev && counter==0)?init:cheker;
+assign seen = (counter==5)?(cheker==check):0;
+endmodule
